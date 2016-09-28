@@ -81,6 +81,7 @@ class TableImporterPlugin extends Plugin
         foreach ($matches as $match) {
             $fullmatch = $match[0];
             $filename = $match[1];
+            $filename = self::get_absolute_path($filename);
             $options = $match[3];
             if (options !== null) {
                 $options = str_replace(' ', '', $options);
@@ -98,7 +99,9 @@ class TableImporterPlugin extends Plugin
             if ($filepath === null) {
                 $filepath = '';
             }
+            $filepath = self::get_absolute_path($filepath);
             $filepath = DATA_DIR.$filepath.'/'.$filename;
+            // Ensure you're in the `user/data` folder
             $exists = file_exists($filepath);
             $filecontents = null;
             if ($exists) {
@@ -155,6 +158,9 @@ class TableImporterPlugin extends Plugin
                     }
                     $this->outerEscape = $escape;
                     $reader->setEscape($escape);
+                    // This func is to compensate for a bug in PHP's `SplFileObject` class.
+                    // https://bugs.php.net/bug.php?id=55413
+                    // This func strips out the extraneous escape character.
                     $func = function ($row) {
                         $e = preg_quote($this->outerEscape);
                         foreach ($row as &$cell) {
@@ -167,10 +173,6 @@ class TableImporterPlugin extends Plugin
                 } else {
                     throw new \RuntimeException('TableImporter Plugin: Only JSON, YAML, and CSV files are supported.');
                 }
-
-//                if ($type === 'csv') {
-//                    dump($filecontents);
-//                }
 
                 if ($filecontents !== null) {
                     // Now generate the table markdown
@@ -202,9 +204,6 @@ class TableImporterPlugin extends Plugin
                         }
                         $toinsert .= "|\n";
                     }
-//                    if ($type === 'csv') {
-//                        dump($toinsert);
-//                    }
 
                     // Replace the tag
                     $markdown = str_replace($match[0], $toinsert, $markdown);
@@ -219,4 +218,18 @@ class TableImporterPlugin extends Plugin
         return $needle === "" || (($temp = strlen($haystack) - strlen($needle)) >= 0 && strpos($haystack, $needle, $temp) !== false);
     }
 
+    private static function get_absolute_path($path) {
+        $path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
+        $parts = array_filter(explode(DIRECTORY_SEPARATOR, $path), 'strlen');
+        $absolutes = array();
+        foreach ($parts as $part) {
+            if ('.' == $part) continue;
+            if ('..' == $part) {
+                array_pop($absolutes);
+            } else {
+                $absolutes[] = $part;
+            }
+        }
+        return implode(DIRECTORY_SEPARATOR, $absolutes);
+    }
 }
