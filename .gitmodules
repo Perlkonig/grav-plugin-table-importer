@@ -1,3 +1,0 @@
-[submodule "csv"]
-	path = csv
-	url = https://github.com/thephpleague/csv
