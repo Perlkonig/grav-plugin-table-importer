@@ -1,7 +1,7 @@
 <?php
 namespace Grav\Plugin;
 
-require_once __DIR__ . '/csv/autoload.php';
+require_once __DIR__ . '/vendor/csv/autoload.php';
 
 use Grav\Common\Plugin;
 use RocketTheme\Toolbox\Event\Event;
