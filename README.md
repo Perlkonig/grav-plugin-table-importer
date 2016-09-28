@@ -28,7 +28,7 @@ You should now have all the plugin files under
 
 Here's the default configuration. To override, first copy `table-importer.yaml` from the `user/plugins/table-importer` folder to your `user/config/plugins` folder and only edit that copy. All of these parameters (except `enabled`) can be overridden on a page-by-page basis in the page header.
 
-```
+```yaml
 enabled: true
 active: false
 datadir: tables    #relative to `user/data` folder
@@ -41,7 +41,7 @@ csv_escape: '\'
 
 * The `active` field is usually set to false globally (to save processing time) and then enabled in a page header when needed:
 
-  ```
+  ```yaml
   table-importer:
     active: true
   ```
@@ -123,17 +123,19 @@ Tables are inserted using a special shortcode of the following structure:
 
   * If you want to customize the CSV parser, you can pass any of the following options followed by the single characters: `delimiter`, `enclosure`, `escape`. The only restriction is that you can't use a comma as input, but that's usually fine because the comma is the default `delimiter` anyway.
 
-  * To right align columns, 
+  * To right align columns, add the option `right` and pass a string of column numbers (with the leftmost column being `1`) separated by a forward slash (e.g., `1/2`).
 
 * The code ends with the closing bracket (`]`).
 
 ### Example Codes
 
-* `[TableImporter>test.json]`
+* `[TableImporter>test.json]` (basic import of json table)
 
-* `[tableimporter>my/path/json-as-yaml.json|type=yaml]`
+* `[tableimporter>my/path/json-as-yaml.json|type=yaml]` (parse a file as yaml regardless of extension)
 
-* `[TABLEIMPORTER>file.csv|enclosure=']`
+* `[TABLEIMPORTER>file.csv|enclosure=']` (parse a CSV file that uses a single quote to enclose items)
+
+* `[TableImporter>test.yaml|right=3/4]` (basic yaml table with columns 3 and 4 right aligned)
 
 ## Credits
 

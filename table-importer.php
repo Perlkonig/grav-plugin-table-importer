@@ -178,13 +178,24 @@ class TableImporterPlugin extends Plugin
                     // Now generate the table markdown
                     $toinsert = '';
                     $numcols = count($filecontents[0]);
+
+                    // check for right-alignment
+                    $right = [];
+                    if (array_key_exists('right', $options)) {
+                        $right = explode('/', $options['right']);
+                    }
+
                     if ( (array_key_exists('headers', $options)) && ($options['headers'] === 'false') ) {
                         for ($i=0; $i<$numcols; $i++) {
                             $toinsert .= '|   ';
                         }
                         $toinsert .= "|\n";
                         for ($i=0; $i<$numcols; $i++) {
-                            $toinsert .= '| - ';
+                            $colon = '';
+                            if (in_array($i+1, $right)) {
+                                $colon = ':';
+                            }
+                            $toinsert .= '| -'.$colon.' ';
                         }
                         $toinsert .= "|\n";
                     } else {
@@ -193,8 +204,12 @@ class TableImporterPlugin extends Plugin
                             $toinsert .= '| '.$val.' ';
                         }
                         $toinsert .= "|\n";
-                        foreach ((array) $header as $val) {
-                            $toinsert .= '| --- ';
+                        for ($i=0; $i<$numcols; $i++) {
+                            $colon = '';
+                            if (in_array($i+1, $right)) {
+                                $colon = ':';
+                            }
+                            $toinsert .= '| ---'.$colon.' ';
                         }
                         $toinsert .= "|\n";
                     }
