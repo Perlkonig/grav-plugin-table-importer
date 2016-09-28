@@ -1,0 +1,26 @@
+name: Table Importer
+version: 1.0.0
+description: Imports tables from JSON, YAML, and CSV formats into Markdown tables within a page
+icon: table
+author:
+  name: Aaron Dalton
+  email: aaron@daltons.ca
+homepage: https://github.com/Perlkonig/grav-plugin-table-importer
+keywords: grav, plugin, tables, import, json, yaml, csv
+bugs: https://github.com/Perlkonig/grav-plugin-table-importer/issues
+docs: https://github.com/Perlkonig/grav-plugin-table-importer/blob/master/README.md
+license: MIT
+
+form:
+  validation: strict
+  fields:
+    enabled:
+      type: toggle
+      label: Plugin status
+      highlight: 1
+      default: 0
+      options:
+        1: Enabled
+        0: Disabled
+      validate:
+        type: bool

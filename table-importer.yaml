@@ -1,0 +1,3 @@
+enabled: true
+active: false
+datadir: tables    #relative to `user/data` folder; no leading or trailing slash
