@@ -1,7 +1,7 @@
 <?php
 namespace Grav\Plugin;
 
-require_once __DIR__ . '/classes/Reader.php';
+require_once __DIR__ . '/csv/autoload.php';
 
 use Grav\Common\Plugin;
 use RocketTheme\Toolbox\Event\Event;
@@ -16,6 +16,9 @@ use League\Csv\Reader;
  */
 class TableImporterPlugin extends Plugin
 {
+
+    protected $outerEscape = null;
+
     /**
      * @return array
      *
@@ -63,7 +66,7 @@ class TableImporterPlugin extends Plugin
         }
         if ($this->config->get('plugins.table-importer.active')) {
             $this->enable([
-                'onPageContentRaw' => ['onPageContentRaw', 0],
+                'onPageContentRaw' => ['onPageContentRaw', 1000],
             ]);
         }
     }
@@ -99,7 +102,6 @@ class TableImporterPlugin extends Plugin
             $exists = file_exists($filepath);
             $filecontents = null;
             if ($exists) {
-                dump('Processing '.$filepath);
                 $type = null;
                 if (array_key_exists('type', $options)) {
                     $type = $options['type'];
@@ -117,13 +119,17 @@ class TableImporterPlugin extends Plugin
                     throw new \RuntimeException('TableImporter Plugin: Could not determine the file type. Either use a supported filename extension or pass a valid `type` option.');
                 }
                 // parse the contents based on file extension
-                $fh = File::instance($filepath);
                 if ($type === 'json') {
+                    $fh = File::instance($filepath);
                     $content = $fh->content();
                     $filecontents = json_decode($content);
+                    $fh->free();
                 } elseif ($type === 'yaml') {
+                    $fh = File::instance($filepath);
                     $filecontents = Yaml::parse($fh->content());
+                    $fh->free();
                 } elseif ($type === 'csv') {
+                    $reader = Reader::createFromPath($filepath, 'r');
                     $delimiter = $config->get('plugins.table-importer.csv_delimiter');
                     if (array_key_exists('delimiter', $options)) {
                         $delimiter = $options['delimiter'];
@@ -131,6 +137,7 @@ class TableImporterPlugin extends Plugin
                     if ($delimiter === null) {
                         $delimiter = ',';
                     }
+                    $reader->setDelimiter($delimiter);
                     $enclosure = $config->get('plugins.table-importer.csv_enclosure');
                     if (array_key_exists('enclosure', $options)) {
                         $enclosure = $options['enclosure'];
@@ -138,6 +145,7 @@ class TableImporterPlugin extends Plugin
                     if ($enclosure === null) {
                         $enclosure = '"';
                     }
+                    $reader->setEnclosure($enclosure);
                     $escape = $config->get('plugins.table-importer.csv_escape');
                     if (array_key_exists('escape', $options)) {
                         $escape = $options['escape'];
@@ -145,15 +153,24 @@ class TableImporterPlugin extends Plugin
                     if ($escape === null) {
                         $escape = '\\';
                     }
-                    dump("Delimter: $delimiter, Enclosure: $enclosure, Escape: $escape");
-                    $filecontents = str_getcsv($fh->content(), $delimiter, $enclosure, $escape);
+                    $this->outerEscape = $escape;
+                    $reader->setEscape($escape);
+                    $func = function ($row) {
+                        $e = preg_quote($this->outerEscape);
+                        foreach ($row as &$cell) {
+                            $cell = preg_replace("/$e(?!$e)/", '', $cell);
+                        }
+                        unset($cell);
+                        return $row;
+                    };
+                    $filecontents = $reader->fetchAll($func);
                 } else {
                     throw new \RuntimeException('TableImporter Plugin: Only JSON, YAML, and CSV files are supported.');
                 }
-                $fh->free();
-                if ($type === 'csv') {
-                    dump($filecontents);
-                }
+
+//                if ($type === 'csv') {
+//                    dump($filecontents);
+//                }
 
                 if ($filecontents !== null) {
                     // Now generate the table markdown
@@ -185,12 +202,16 @@ class TableImporterPlugin extends Plugin
                         }
                         $toinsert .= "|\n";
                     }
-                    if ($type === 'csv') {
-                        dump($toinsert);
-                    }
+//                    if ($type === 'csv') {
+//                        dump($toinsert);
+//                    }
+
+                    // Replace the tag
+                    $markdown = str_replace($match[0], $toinsert, $markdown);
                 }
             }
         }
+        $this->grav['page']->setRawContent($markdown);
     }
 
     private static function endsWith($haystack, $needle) {
