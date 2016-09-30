@@ -2,6 +2,8 @@
 
 The **Table Importer** Plugin is for [Grav CMS](http://github.com/getgrav/grav). It imports tables from JSON, YAML, and CSV formats into Markdown tables within a page.
 
+For a demo, [visit my blog](https://perlkonig.com/demos/table-importer).
+
 ## Installation
 
 Installing the Table Importer plugin can be done in one of two ways. The GPM (Grav Package Manager) installation method enables you to quickly and easily install the plugin with a simple terminal command, while the manual method enables you to do so via a zip file.
