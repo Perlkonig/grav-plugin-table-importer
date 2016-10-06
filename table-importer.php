@@ -82,8 +82,8 @@ class TableImporterPlugin extends Plugin
             $fullmatch = $match[0];
             $filename = $match[1];
             $filename = self::get_absolute_path($filename);
-            $options = $match[3];
-            if (options !== null) {
+            $options = isset($match[3]) ? $match[3] : [];
+            if (!empty($options)) {
                 $options = str_replace(' ', '', $options);
                 $options = explode(',', $options);
                 $passed = [];
