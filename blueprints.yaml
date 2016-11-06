@@ -1,6 +1,6 @@
 name: Table Importer
-version: 1.0.2
-description: Imports tables from JSON, YAML, and CSV formats into Markdown tables within a page
+version: 2.0.0
+description: Imports tables from JSON, YAML, and CSV formats into HTML tables within a page
 icon: table
 author:
   name: Aaron Dalton
@@ -11,6 +11,9 @@ bugs: https://github.com/Perlkonig/grav-plugin-table-importer/issues
 docs: https://github.com/Perlkonig/grav-plugin-table-importer/blob/master/README.md
 demo: https://perlkonig.com/demos/table-importer
 license: MIT
+
+dependencies:
+  - shortcode-core
 
 form:
   validation: strict

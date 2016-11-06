@@ -1,3 +1,9 @@
+# v2.0.0
+## 11/05/2016
+
+1. [](#improved)
+    * Moved to `shortcode-core` interface. NOT BACKWARDS COMPATIBLE! Please read the revised documentation.
+
 # v1.0.2
 ## 10/06/2016
 
