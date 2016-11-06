@@ -23,6 +23,12 @@ class TableImporterShortcode extends Shortcode
         if ($fn === null) {
             $fn = $sc->getParameter('ti', trim($sc->getParameterAt(0), '='));
         }
+        $raw = $sc->getParameter('raw', null);
+        if ($raw === null) {
+            $raw = false;
+        } else {
+            $raw = true;
+        }
         $type = $sc->getParameter('type', null);
         $delim = $sc->getParameter('delimiter', ',');
         $encl = $sc->getParameter('enclosure', '"');
@@ -117,7 +123,11 @@ class TableImporterShortcode extends Shortcode
         foreach ($data as $row) {
             $output .= '<tr>';
             foreach ($row as $cell) {
-                $output .= '<td>'.htmlspecialchars($cell).'</td>';
+                if ($raw) {
+                    $output .= '<td>'.$cell.'</td>';
+                } else {
+                    $output .= '<td>'.htmlspecialchars($cell).'</td>';
+                }
             }
             $output .= '</tr>';
         }

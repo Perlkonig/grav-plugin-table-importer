@@ -1,3 +1,9 @@
+# v2.0.1
+## 11/05/2016
+
+1. [](#new)
+    * Added `raw` option to allow you to include HTML in your table data.
+
 # v2.0.0
 ## 11/05/2016
 
