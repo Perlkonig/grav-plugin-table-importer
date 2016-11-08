@@ -93,6 +93,8 @@ The Table Importer shortcode is a self-closing `[ti option1="value1" option2="va
 
 * `type` is usually unnecessary. It tells the plugin what format the data file is in. The only acceptable values are `yaml`, `json`, and `csv`. However, the plugin looks at the file name extension first. If it's `yaml`, `yml`, `json`, or `csv`, then there's no need to use the `type` option. 
 
+* `caption` will insert a `<caption>` tag containing the value of this option after being run through PHP's `htmlspecialchars`.
+
 * `header` tells the plugin whether you want a header row or not. By default, the first row is rendered as a header. Passing *any* value to `header` will disable the header row.
 
 * `class` lets you assign class definitions to the table itself. Whatever you put here will be escaped (via PHP's `htmlspecialchars`) and placed into the opening `<table>` tag.

@@ -34,6 +34,7 @@ class TableImporterShortcode extends Shortcode
         $encl = $sc->getParameter('enclosure', '"');
         $esc = $sc->getParameter('escape', '\\');
         $class = $sc->getParameter('class', null);
+        $caption = $sc->getParameter('caption', null);
         $header = $sc->getParameter('header', null);
         if ($header === null) {
             $header = true;
@@ -109,6 +110,11 @@ class TableImporterShortcode extends Shortcode
             $output .= ' class="'.htmlspecialchars($class).'"';
         }
         $output .= '>';
+
+        // Insert caption if given
+        if ( ($caption !== null) && (strlen($caption) > 0) ) {
+            $output .= '<caption>'.htmlspecialchars($caption).'</caption>';
+        }
 
         if ($header) {
             $row = array_shift($data);
