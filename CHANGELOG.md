@@ -1,3 +1,9 @@
+# v2.0.2
+## 11/07/2016
+
+1. [](#bugfix)
+    * The `trim` functions don't work the way I thought they did. Fixed it.
+
 # v2.0.1
 ## 11/05/2016
 
