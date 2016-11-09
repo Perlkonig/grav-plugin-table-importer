@@ -1,3 +1,9 @@
+# v2.1.2
+## 11/08/2016
+
+1. [](#new)
+    * Added a `caption` option to add a caption to the table.
+
 # v2.0.2
 ## 11/07/2016
 
