@@ -1,3 +1,9 @@
+# v2.1.3
+## 01/31/2017
+
+1. [](#bugfix)
+    * Fixed a problem with the code not running with the Admin plugin installed.
+
 # v2.1.2
 ## 11/08/2016
 
