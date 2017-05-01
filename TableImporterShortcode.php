@@ -146,7 +146,7 @@ class TableImporterShortcode extends Shortcode
     private function getPath($fn) {
         if (Utils::startswith($fn, 'data:')) {
             $path = $this->grav['locator']->findResource('user://data', true);
-            $fn = str_replace('data:', 'replace', $fn);
+            $fn = str_replace('data:', '', $fn);
         } else {
             $path = $this->grav['page']->path();
         }
