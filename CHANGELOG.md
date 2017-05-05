@@ -1,3 +1,9 @@
+# v2.1.4
+## 05/05/2017
+
+1. [](#bugfix)
+    * Fixed a bug with `data://` calls. Thanks, @kyleblanker!
+
 # v2.1.3
 ## 01/31/2017
 
