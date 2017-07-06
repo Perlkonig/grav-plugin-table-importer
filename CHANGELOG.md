@@ -1,3 +1,9 @@
+# v2.1.5
+## 07/06/2017
+
+1. [](#bugfix)
+    * Fixed a bug with abbreviated shortcodes ('[ti=filename.ext/]').
+
 # v2.1.4
 ## 05/05/2017
 
