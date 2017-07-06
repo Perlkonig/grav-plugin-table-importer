@@ -21,7 +21,13 @@ class TableImporterShortcode extends Shortcode
     public function process(ShortcodeInterface $sc) {
         $fn = $sc->getParameter('file', null);
         if ($fn === null) {
-            $fn = $sc->getParameter('ti', trim($sc->getParameterAt(0), '='));
+            $fn = $sc->getShortcodeText();
+            $fn = str_replace('[ti=', '', $fn);
+            $fn = str_replace('/]', '', $fn);
+            $fn = trim($fn);
+        }
+        if ( ($fn === null) && ($fn === '') ) {
+            return "<p>Table Importer: Malformed shortcode (<tt>".htmlspecialchars($sc->getShortcodeText())."</tt>).</p>";
         }
         $raw = $sc->getParameter('raw', null);
         if ($raw === null) {
