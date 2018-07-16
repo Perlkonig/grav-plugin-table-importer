@@ -1,3 +1,12 @@
+# v2.2.0
+## 07/16/2018
+
+1. [](#new)
+    * You can now add custom `id` tags to the tables (thanks to @mwender).
+
+1. [](#improved)
+    * Improved error reporting when things go wrong.
+
 # v2.1.5
 ## 07/06/2017
 
