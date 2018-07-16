@@ -110,7 +110,12 @@ class TableImporterShortcode extends Shortcode
             return "<p>Table Importer: Something went wrong loading '$type' data from the requested file '$fn'.</p>";
         }
         $output = '';
-        $id = $this->shortcode->getId($sc);
+        
+        // Table's id can be specified by adding an `id` attribute to the shortcode
+        $id = $sc->getParameter('id', null);
+        if ($id === null)
+          $id = $this->shortcode->getId($sc);
+        
         $output .= '<table id="'.$id.'"';
         if ($class !== null) {
             $output .= ' class="'.htmlspecialchars($class).'"';
