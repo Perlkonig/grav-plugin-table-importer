@@ -99,6 +99,8 @@ The Table Importer shortcode is a self-closing `[ti option1="value1" option2="va
 
 * `class` lets you assign class definitions to the table itself. Whatever you put here will be escaped (via PHP's `htmlspecialchars`) and placed into the opening `<table>` tag.
 
+* `id` lets you specify the table tag's `id` attribute (e.g. `[ti file="mytable.yaml" id="my-custom-table-id"]` yields `<table id="my-custom-table-id">...</table>`).
+
 * By default, the content of each cell is escaped using PHP's `htmlspecialchars` function. If the `raw` option is set to anything at all, the escaping will be disabled. **Only do this if you trust the incoming data!**
 
 * Finally, for CSV files only, you can customize how it will be parsed using any of the following three options:
