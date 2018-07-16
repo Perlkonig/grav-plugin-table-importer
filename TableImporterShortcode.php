@@ -105,48 +105,52 @@ class TableImporterShortcode extends Shortcode
                 break;
         }
 
-        // Build the table
-        if ($data === null) {
-            return "<p>Table Importer: Something went wrong loading '$type' data from the requested file '$fn'.</p>";
-        }
-        $output = '';
-        $id = $this->shortcode->getId($sc);
-        $output .= '<table id="'.$id.'"';
-        if ($class !== null) {
-            $output .= ' class="'.htmlspecialchars($class).'"';
-        }
-        $output .= '>';
-
-        // Insert caption if given
-        if ( ($caption !== null) && (strlen($caption) > 0) ) {
-            $output .= '<caption>'.htmlspecialchars($caption).'</caption>';
-        }
-
-        if ($header) {
-            $row = array_shift($data);
-            $output .= '<thead><tr>';
-            foreach ($row as $cell) {
-                $output .= '<th>'.$cell.'</th>';
+        try {
+            // Build the table
+            if ($data === null) {
+                return "<p>Table Importer: Something went wrong loading '$type' data from the requested file '$fn'.</p>";
             }
-            $output .= '</tr></thead>';
-        }
+            $output = '';
+            $id = $this->shortcode->getId($sc);
+            $output .= '<table id="'.$id.'"';
+            if ($class !== null) {
+                $output .= ' class="'.htmlspecialchars($class).'"';
+            }
+            $output .= '>';
 
-        $output .= '<tbody>';
-        foreach ($data as $row) {
-            $output .= '<tr>';
-            foreach ($row as $cell) {
-                if ($raw) {
-                    $output .= '<td>'.$cell.'</td>';
-                } else {
-                    $output .= '<td>'.htmlspecialchars($cell).'</td>';
+            // Insert caption if given
+            if ( ($caption !== null) && (strlen($caption) > 0) ) {
+                $output .= '<caption>'.htmlspecialchars($caption).'</caption>';
+            }
+
+            if ($header) {
+                $row = array_shift($data);
+                $output .= '<thead><tr>';
+                foreach ($row as $cell) {
+                    $output .= '<th>'.$cell.'</th>';
                 }
+                $output .= '</tr></thead>';
             }
-            $output .= '</tr>';
-        }
-        $output .= '</tbody>';
 
-        $output .= '</table>';
-        return $output;
+            $output .= '<tbody>';
+            foreach ($data as $row) {
+                $output .= '<tr>';
+                foreach ($row as $cell) {
+                    if ($raw) {
+                        $output .= '<td>'.$cell.'</td>';
+                    } else {
+                        $output .= '<td>'.htmlspecialchars($cell).'</td>';
+                    }
+                }
+                $output .= '</tr>';
+            }
+            $output .= '</tbody>';
+
+            $output .= '</table>';
+            return $output;
+        } catch (\Exception $e) {
+            return '<p>The data in "'.$fn.'" appears to be malformed. Please review the documentation.';
+        }
     }
 
     private function getPath($fn) {
