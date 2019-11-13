@@ -1,3 +1,9 @@
+#v2.2.1
+## 11/12/2019
+
+1. [](#bugfix)
+    * Fixed a bug involving a blank `page` variable (thanks to @gamahachaa).
+
 # v2.2.0
 ## 07/16/2018
 
